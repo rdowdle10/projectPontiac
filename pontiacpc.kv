@@ -1,0 +1,192 @@
+ScreenManagement:
+    MainMenu:
+    A2DPScreen:
+    OBD2Screen:
+    SettingsScreen:
+
+#Main menu screen. Contains buttons that lead to the other screens providing
+<ClockText>:
+<ActionClock>:
+    font_size: 26
+    size: self.texture_size
+
+<MainMenu>:
+    name: 'main'
+    FloatLayout:
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'bg.JPG'
+                
+    #Label for the clock (updated in main.py):
+        ClockText:
+            font_size: 48
+            id: clocktext
+            size: self.texture_size
+            pos: 300, -210
+
+    #Button for the A2DP Screen
+        Button:
+            on_release: app.root.current = 'a2dp'
+            text: 'Bluetooth Media'
+            font_size: 16
+            pos: 0, 0
+            size_hint: .2, .2
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+
+    #Button for the OBDII Screen
+        Button:
+            on_release: app.root.current = 'obd2'
+            text: 'OBD2 Data'
+            font_size: 16
+            pos: 0, 100
+            size_hint: .2, .2
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+
+    #Button for the Settings Screen
+        Button:
+            on_release: app.root.current = "settings"
+            text: 'Settings'
+            font_size: 16
+            pos: 0, 200
+            size_hint: .2, .2
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+
+
+#Begin code for the A2DP Screen
+<A2DPScreen>:
+    name: 'a2dp'
+
+#########################################################
+#BEGIN SECTION WITH BUTTONS AND LABELS FOR MUSIC PLAYBACK
+    FloatLayout:
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'a2dp_bg.png'
+                Button:
+#PREVIOUS BUTTON
+        Button:
+            id: 'a2dp_prev'
+            text: '<<'
+            font_size: 24
+            pos: 80, 140
+            size_hint: .2, .1
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+#PAUSE/PLAY BUTTON
+        # Replace with button that actually pauses the music lol
+        ActionTestButton:
+            id: 'a2dp_control'
+            text: '||'
+            font_size: 24
+            pos: 260, 140
+            size_hint: .2, .1
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+            on_press: app.test()
+#NEXT BUTTON
+        Button:
+            id: 'a2dp_next'
+            text: '>>'
+            font_size: 24
+            pos: 440, 140
+            size_hint: .2, .1
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+
+#LABEL FOR SONG NAME
+        Label:
+            font_size: 24
+            halign: 'left'
+            id: songname
+            size: 42, 300
+            pos: 80, 140
+            text_size: root.width, None
+            text:'Sorta Long Song Title Blah Blah Blah Bleh Blah'
+
+#LABEL FOR SONG ARTIST
+        Label:
+            font_size: 18
+            halign: 'left'
+            id: songartist
+            size: self.texture_size
+            pos: 80, 90
+            text_size: root.width, None
+            text: 'Song Artist Goes Here'
+
+#LABEL FOR SONG ALBUM
+        Label:
+            font_size: 18
+            halign: 'left'
+            id: songalbum
+            size: self.texture_size
+            pos: 80, 65
+            text_size: root.width, None
+            text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
+
+########################################################
+
+#Begin section for A2DP Screen
+    ActionBar:
+        background_color: 153,0,0,0.1
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                title: 'A2DP'
+                with_previous: True
+                on_release: app.root.current = 'main'
+            ActionOverflow:
+                ActionButton:
+                    text: 'Settings'
+            ActionClock:
+#End code for the ADP2 Screen
+
+#Begin code for the OBD2 Screen
+<OBD2Screen>:
+    name: 'obd2'
+    FloatLayout:
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'a2dp_bg.png'
+    ActionBar:
+        background_color: 153,0,0,0.1
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                title: 'OBDII'
+                with_previous: True
+                on_release: app.root.current = 'main'
+            ActionClock:
+            ActionOverflow:
+                ActionButton:
+                    text: 'Settings'
+
+#End code for the OBD2 Screen
+
+#Begin code for the Settings Screen
+<SettingsScreen>:
+    name: 'settings'
+    ActionBar:
+        background_color: 153,0,0,0.1
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                title: 'Settings'
+                with_previous: True
+                on_release: app.root.current = 'main'
+            ActionClock:
+            ActionOverflow:
+                ActionButton:
+                    text: 'About'
+#End code for the Settings Screen
