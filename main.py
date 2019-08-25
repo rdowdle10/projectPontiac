@@ -85,7 +85,11 @@ class MainApp(App):
     # 'app.name_of_function()' if a system program were to be executed
     def test(self):
         os.system("notify-send 'Paused music'")
-
+    def nextsongtest(self):
+        os.system("notify-send 'Next song'")
+    def prevsongtest(self):
+        os.system("notify-send 'Next song'")
+        
 presentation = Builder.load_file("pontiacpc.kv")
 
 # ---------------------------------------------------------------------
