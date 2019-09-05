@@ -11,6 +11,7 @@ from kivy.lang import Builder
 from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
+from kivy.properties import StringProperty
 from datetime import (
     datetime, timedelta
 )
@@ -39,6 +40,9 @@ class OBD2Screen(Screen):
 class SettingsScreen(Screen):
     pass
 
+class TrafficScreen(Screen):
+    pass
+
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
@@ -62,7 +66,9 @@ class ActionClock(ActionLabel):
         Clock.schedule_interval(self.update, 1)
 
     def update(self, *args):
-        self.text = time.strftime('%I:%M%p')    
+        self.text = time.strftime('%I:%M%p')
+
+        
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
@@ -70,7 +76,6 @@ class ActionClock(ActionLabel):
 class ActionTestButton(Button):
     def execute(self):
         os.system("notify-send 'ayy lmao'")
-    
 
 # ---------------------------------------------------------------------
 
@@ -78,6 +83,7 @@ class ActionTestButton(Button):
 # Class for the main application
 class MainApp(App):
     def build(self):
+        self.updateTrafficPic()
         return presentation
 
     # Replace the following lines to reflect on what you want any buttons to do
@@ -88,8 +94,19 @@ class MainApp(App):
     def nextsongtest(self):
         os.system("notify-send 'Next song'")
     def prevsongtest(self):
-        os.system("notify-send 'Next song'")
+        os.system("notify-send 'Previous song'")
+
+    # The following function will be used to update a live traffic image that portrays
+    # data on a commute in pierce county. The updating will be handled by a simple shell
+    # script.
+
+    def updateTrafficPic(self):
+        os.system("bash updateTrafficPic.sh")
         
+
+
+        
+
 presentation = Builder.load_file("pontiacpc.kv")
 
 # ---------------------------------------------------------------------

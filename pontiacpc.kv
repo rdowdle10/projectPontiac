@@ -3,6 +3,7 @@ ScreenManagement:
     A2DPScreen:
     OBD2Screen:
     SettingsScreen:
+    TrafficScreen:
 
 #Main menu screen. Contains buttons that lead to the other screens providing
 <ClockText>:
@@ -29,12 +30,19 @@ ScreenManagement:
     #Button for the A2DP Screen
         Button:
             on_release: app.root.current = 'a2dp'
-            text: 'Bluetooth Media'
+#            text: 'Bluetooth Media'
             font_size: 16
             pos: 0, 0
             size_hint: .2, .2
             background_normal: ''
-            background_color: 255, 0, 0, 0.1
+            background_color: 255, 0, 0, 0
+            Image:
+                source: 'bt_audio.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 72, 72
+
+
 
     #Button for the OBDII Screen
         Button:
@@ -56,6 +64,40 @@ ScreenManagement:
             background_normal: ''
             background_color: 255, 0, 0, 0.1
 
+    #Button for the Traffic screen
+        Button:
+            on_release: app.root.current = "traffic"
+            text: 'Traffic'
+            font_size: 16
+            pos: 100, 200
+            size_hint: .2, .2
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+
+#Begin code for the Traffic Screen
+<TrafficScreen>:
+    name: 'traffic'
+
+    FloatLayout:
+        canvas:
+            Rectangle:
+                id: 'traffic_img'
+                pos: self.pos
+                size: 250, 400
+                source: 'tacoma.png'
+        ActionBar:
+            background_color: 153,0,0,0.1
+            pos_hint: {'top':1}
+            ActionView:
+                use_separator: True
+                ActionPrevious:
+                    title: 'Traffic'
+                    with_previous: True
+                    on_release: app.root.current = 'main'
+                ActionOverflow:
+                    ActionButton:
+                        text: 'Settings'
+                ActionClock:
 
 #Begin code for the A2DP Screen
 <A2DPScreen>:
