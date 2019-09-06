@@ -1,9 +1,18 @@
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
 ScreenManagement:
     MainMenu:
     A2DPScreen:
     OBD2Screen:
     SettingsScreen:
     TrafficScreen:
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 #Main menu screen. Contains buttons that lead to the other screens providing
 <ClockText>:
@@ -18,7 +27,7 @@ ScreenManagement:
             Rectangle:
                 pos: self.pos
                 size: self.size
-                source: 'bg.JPG'
+                source: 'bg_pont.jpg'
                 
     #Label for the clock (updated in main.py):
         ClockText:
@@ -42,37 +51,47 @@ ScreenManagement:
                 center_y: self.parent.center_y
                 size: 72, 72
 
-
-
     #Button for the OBDII Screen
-        Button:
-            on_release: app.root.current = 'obd2'
-            text: 'OBD2 Data'
-            font_size: 16
-            pos: 0, 100
-            size_hint: .2, .2
-            background_normal: ''
-            background_color: 255, 0, 0, 0.1
+#        Button:
+#            on_release: app.root.current = 'obd2'
+#            text: 'OBD2 Data'
+#            font_size: 16
+#            pos: 0, 100
+#            size_hint: .2, .2
+#            background_normal: ''
+#            background_color: 255, 0, 0, 0.1
+
 
     #Button for the Settings Screen
-        Button:
-            on_release: app.root.current = "settings"
-            text: 'Settings'
-            font_size: 16
-            pos: 0, 200
-            size_hint: .2, .2
-            background_normal: ''
-            background_color: 255, 0, 0, 0.1
+#        Button:
+#            on_release: app.root.current = "settings"
+#            text: 'Settings'
+#            font_size: 16
+#            pos: 0, 200
+#           size_hint: .2, .2
+#            background_normal: ''
+#            background_color: 255, 0, 0, 0.1
 
     #Button for the Traffic screen
         Button:
             on_release: app.root.current = "traffic"
-            text: 'Traffic'
+#            text: 'Traffic'
             font_size: 16
-            pos: 100, 200
+            pos: 160, 0
             size_hint: .2, .2
             background_normal: ''
-            background_color: 255, 0, 0, 0.1
+            background_color: 255, 0, 0, 0
+            Image:
+                source: 'traffic.png'
+                center_x: self.parent.center_x
+                center_y: self.parent.center_y
+                size: 72, 72
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 #Begin code for the Traffic Screen
 <TrafficScreen>:
@@ -80,11 +99,40 @@ ScreenManagement:
 
     FloatLayout:
         canvas:
+            # Picture. Will be updated to something more malleable through python
             Rectangle:
                 id: 'traffic_img'
-                pos: self.pos
+                pos: 20, 20
                 size: 250, 400
                 source: 'tacoma.png'
+        Label:
+            font_size: 14
+            halign: 'left'
+            pos: 0, -230
+            #text_size: root.width, None
+            text: 'Data is reloaded every time car is started up and connected to the internet.'
+
+        # Labels for information corresponding to Blocked Traffic in Pierce County
+        Label:
+            font_size: 18
+            halign: 'left'
+            pos: -25, 80
+            text: 'BLOCKED TRAFFIC'
+        BlockedTraffic:
+            pos: 50, -30
+            text_size: cm(8), cm(8)
+        # Labels for information corresponding to Special Events that affect traffic in Pierce County
+        Label:
+            font_size: 18
+            halign: 'left'
+            pos: -30, -80
+            text: 'SPECIAL EVENTS'
+        SpecialTraffic:
+            halign: 'left'
+            pos: 50, 100
+            text_size: cm(8), cm(8)
+
+        # Code for the actionbar
         ActionBar:
             background_color: 153,0,0,0.1
             pos_hint: {'top':1}
@@ -98,6 +146,12 @@ ScreenManagement:
                     ActionButton:
                         text: 'Settings'
                 ActionClock:
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 #Begin code for the A2DP Screen
 <A2DPScreen>:
@@ -175,6 +229,11 @@ ScreenManagement:
             text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
 
 ########################################################
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 #Begin section for A2DP Screen
     ActionBar:
@@ -191,6 +250,12 @@ ScreenManagement:
                     text: 'Settings'
             ActionClock:
 #End code for the ADP2 Screen
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
 
 #Begin code for the OBD2 Screen
 <OBD2Screen>:
@@ -217,6 +282,12 @@ ScreenManagement:
 
 #End code for the OBD2 Screen
 
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+
 #Begin code for the Settings Screen
 <SettingsScreen>:
     name: 'settings'
@@ -234,3 +305,5 @@ ScreenManagement:
                 ActionButton:
                     text: 'About'
 #End code for the Settings Screen
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------

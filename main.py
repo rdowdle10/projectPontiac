@@ -18,6 +18,7 @@ from datetime import (
 from time import strftime
 import time
 import os
+import subprocess
 
 Window.size = (800, 480)
 
@@ -59,6 +60,47 @@ class ClockText(Label):
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+# The following classes are to be used for labels that contain information gathered from the
+# Washington Department of Transportation.
+class BlockedTraffic(Label):
+    def __init__(self, **kwargs):
+        super(BlockedTraffic, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+    
+    def update(self, *args):
+        # The following line takes a file and creates a NONETYPE output that is later converted
+        # to a string.
+        cmd = subprocess.Popen(['cat', 'blockedtraffic'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+        stdout,stderr = cmd.communicate()
+        self.text = str(stdout)
+
+class SpecialTraffic(Label):
+    def __init__(self, **kwargs):
+        super(SpecialTraffic, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+    
+    def update(self, *args):
+        # The following line takes a file and creates a NONETYPE output that is later converted
+        # to a string.
+        cmd = subprocess.Popen(['cat', 'specialevents'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+
+        stdout,stderr = cmd.communicate()
+        self.text = str(stdout)
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+
+
+# ---------------------------------------------------------------------
+# TODO: Create a class for a label that takes the output of
+# cat default.aspx | grep -i -A 2 SpecialU | grep li | cut -b 29-500 | sed "s/'</li>'/"
+# cat default.aspx | grep -i -A 2 BlockingU | grep li | cut -b 29-500 | sed "s/'</li>'/"
+# So that it is displayed once information is downloaded off of the WASHDOT website...
+
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
 # Class for a clock label that will be displayed on the actionbar (ActionClock)
 class ActionClock(ActionLabel):
     def __init__(self, **kwargs):
@@ -83,7 +125,10 @@ class ActionTestButton(Button):
 # Class for the main application
 class MainApp(App):
     def build(self):
-        self.updateTrafficPic()
+        #This was temporarily superceded by a startup script that downloads data once
+        #car is turned on.
+        #TODO: Create a method to manually refresh using a button
+        #self.updateTrafficPic()
         return presentation
 
     # Replace the following lines to reflect on what you want any buttons to do
