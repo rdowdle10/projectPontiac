@@ -228,10 +228,29 @@ ScreenManagement:
             text_size: root.width, None
             text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
 
-########################################################
-# ---------------------------------------------------------------------
-# ---------------------------------------------------------------------
+#SLIDER THAT CONTROLS SYSTEM VOLUME
+# The slider works, but unfortunately upon startup, the application thinks that
+# system volume is at 0 when it's not. Will need to fix. Temporary bandaid is to
+# set the value at 40 for effect.
+        VolumeControl:
+            id: volslider
+            min: 0
+            max: 100
+            step: 5
+            orientation: 'vertical'
+            pos: 480, 150
+            size_hint: .5, .5
+            cursor_size: 28, 28
+#            sensitivity: "handle"
+            value: 40
+            on_touch_move: self.volUpdate()
+            on_touch_down: self.volUpdate()
+            on_touch_up: self.volUpdate()
 
+
+#        Label:
+#            id: vollevel
+#            text: "Volume: " + str(volslider.value) + "%"
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 
@@ -245,9 +264,9 @@ ScreenManagement:
                 title: 'A2DP'
                 with_previous: True
                 on_release: app.root.current = 'main'
-            ActionOverflow:
-                ActionButton:
-                    text: 'Settings'
+#            ActionOverflow:
+#                ActionButton:
+#                    text: 'Settings'
             ActionClock:
 #End code for the ADP2 Screen
 

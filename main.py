@@ -12,6 +12,9 @@ from kivy.core.window import Window
 from kivy.uix.floatlayout import FloatLayout
 from kivy.uix.button import Button
 from kivy.properties import StringProperty
+from kivy.uix.slider import Slider
+from kivy.properties import ObjectProperty
+from kivy.properties import NumericProperty
 from datetime import (
     datetime, timedelta
 )
@@ -33,6 +36,9 @@ class MainMenu(Screen):
     pass
 
 class A2DPScreen(Screen):
+    def volUpdate(self, *args):
+        level = self.value
+        subprocess.call(["notify-send", level])
     pass
 
 class OBD2Screen(Screen):
@@ -90,6 +96,18 @@ class SpecialTraffic(Label):
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+# Brainstorming space for volume control...
+
+class VolumeControl(Slider):
+    def volUpdate(self, *args):
+        level = str(self.value)
+        percent = str("%")
+        #subprocess.call(["notify-send", level])
+        subprocess.call(["amixer", "set", "Master", level + percent])
+
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
 
 
 # ---------------------------------------------------------------------
@@ -124,6 +142,8 @@ class ActionTestButton(Button):
 # ---------------------------------------------------------------------
 # Class for the main application
 class MainApp(App):
+
+
     def build(self):
         #This was temporarily superceded by a startup script that downloads data once
         #car is turned on.
@@ -147,10 +167,8 @@ class MainApp(App):
 
     def updateTrafficPic(self):
         os.system("bash updateTrafficPic.sh")
-        
 
-
-        
+volLvl = NumericProperty()
 
 presentation = Builder.load_file("pontiacpc.kv")
 
