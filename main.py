@@ -76,8 +76,28 @@ class SongAlbum(Label):
         Clock.schedule_interval(self.update, 1)
 
     def update(self, *args):
-        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track")
+        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Album | grep variant | cut -b 43-500").read()
 
+        self.text = str(bluetoothdataraw)
+
+class SongName(Label):
+    def __init__(self, **kwargs):
+        super(SongName, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+
+    def update(self, *args):
+        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Title | grep variant | cut -b 43-500").read()
+        
+        self.text = str(bluetoothdataraw)
+
+class SongArtist(Label):
+    def __init__(self, **kwargs):
+        super(SongArtist, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+
+    def update(self, *args):
+        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Artist | grep variant | cut -b 43-500").read()
+        
         self.text = str(bluetoothdataraw)
 # ---------------------------------------------------------------------
 
