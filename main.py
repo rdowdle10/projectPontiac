@@ -175,6 +175,8 @@ class ActionTestButton(Button):
     def execute(self):
         os.system("notify-send 'ayy lmao'")
 
+
+
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
@@ -192,12 +194,12 @@ class MainApp(App):
     # Replace the following lines to reflect on what you want any buttons to do
     # in the app, then add them into the KV file in the form of
     # 'app.name_of_function()' if a system program were to be executed
-    def test(self):
-        os.system("notify-send 'Paused music'")
-    def nextsongtest(self):
-        os.system("notify-send 'Next song'")
-    def prevsongtest(self):
-        os.system("notify-send 'Previous song'")
+    def play(self):
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Play")
+    def nextsong(self):
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Next")
+    def prevsong(self):
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Previous")
 
     # The following function will be used to update a live traffic image that portrays
     # data on a commute in pierce county. The updating will be handled by a simple shell

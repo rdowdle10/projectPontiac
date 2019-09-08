@@ -175,7 +175,7 @@ ScreenManagement:
             size_hint: .2, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
-            on_press: app.prevsongtest()
+            on_press: app.prevsong()
 #PAUSE/PLAY BUTTON
         # Replace with button that actually pauses the music lol
         ActionTestButton:
@@ -186,7 +186,7 @@ ScreenManagement:
             size_hint: .2, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
-            on_press: app.test()
+            on_press: app.play()
 #NEXT BUTTON
         Button:
             id: 'a2dp_next'
@@ -196,7 +196,7 @@ ScreenManagement:
             size_hint: .2, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
-            on_press: app.nextsongtest()
+            on_press: app.nextsong()
 
 #LABEL FOR SONG NAME
         SongName:
