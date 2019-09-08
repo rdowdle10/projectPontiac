@@ -104,6 +104,8 @@ class SongArtist(Label):
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
 # The following classes are to be used for labels that contain information gathered from the
 # Washington Department of Transportation.
 class BlockedTraffic(Label):
@@ -114,10 +116,14 @@ class BlockedTraffic(Label):
     def update(self, *args):
         # The following line takes a file and creates a NONETYPE output that is later converted
         # to a string.
-        cmd = subprocess.Popen(['cat', 'blockedtraffic'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#         cmd = subprocess.Popen(['cat', 'blockedtraffic'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-        stdout,stderr = cmd.communicate()
-        self.text = str(stdout)
+#        stdout,stderr = cmd.communicate()
+#        self.text = str(stdout)
+
+        blktrff = os.popen("cat blockedtraffic").read()
+
+        self.text = str(blktrff)
 
 class SpecialTraffic(Label):
     def __init__(self, **kwargs):
@@ -127,10 +133,19 @@ class SpecialTraffic(Label):
     def update(self, *args):
         # The following line takes a file and creates a NONETYPE output that is later converted
         # to a string.
-        cmd = subprocess.Popen(['cat', 'specialevents'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
+#         cmd = subprocess.Popen(['cat', 'specialevents'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
 
-        stdout,stderr = cmd.communicate()
-        self.text = str(stdout)
+#        stdout,stderr = cmd.communicate()
+#        self.text = str(stdout)
+        spcltrff = os.popen("cat specialevents").read()
+        self.text = str(spcltrff)
+    
+#    def newupdate(self, *args):
+#        # Different way to read text from output?
+#        specialTraffic = os.popen("cat default.aspx | grep -i -A 2 SpecialU | grep li | cut -b 29-500").read()
+#        
+#        self.text = str(specialTraffic)
+
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
