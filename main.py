@@ -66,6 +66,24 @@ class ClockText(Label):
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
+# This particular class will be the Label that outputs the song information in the App using dbus...
+#'dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_' + bluetoothdevicemac + '/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track'
+# The above monster of a line of code will be used to gather data on media being played through the speakers...
+
+class SongAlbum(Label):
+    def __init__(self, **kwargs):
+        super(SongAlbum, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+
+    def update(self, *args):
+        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track")
+
+        self.text = str(bluetoothdataraw)
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
+
+# ---------------------------------------------------------------------
 # The following classes are to be used for labels that contain information gathered from the
 # Washington Department of Transportation.
 class BlockedTraffic(Label):
