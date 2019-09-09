@@ -100,6 +100,16 @@ ScreenManagement:
                 center_y: self.parent.center_y
                 size: 72, 72
 
+    #Button to shut off screen
+        Button:
+            on_release: app.screenOff()
+            text: 'Screen off'
+            font_size: 16
+            pos: 330, -20
+            size_hint: .2, .2
+            background_normal: ''
+            background_color: 255, 0, 0, 0
+
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 #    _______         __  __ _      
@@ -133,7 +143,7 @@ ScreenManagement:
             halign: 'left'
             pos: 0, -230
             #text_size: root.width, None
-            text: 'Data is reloaded every time car is started up and connected to the internet.'
+            text: 'Data is loaded from WSDOT every time car is started up and connected to the internet.'
 
         # Labels for information corresponding to Blocked Traffic in Pierce County
         Label:
@@ -209,28 +219,38 @@ ScreenManagement:
             text: '<<'
             font_size: 24
             pos: 40, 140
-            size_hint: .2, .1
+            size_hint: .115, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
             on_press: app.prevsong()
-#PAUSE/PLAY BUTTON
-        # Replace with button that actually pauses the music lol
+#PAUSE BUTTON
         ActionTestButton:
             id: 'a2dp_control'
             text: '||'
             font_size: 24
-            pos: 220, 140
-            size_hint: .2, .1
+            size_hint: .115, .1
+            pos: 140, 140
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+            on_press: app.pause()
+#PLAY BUTTON
+        ActionTestButton:
+            id: 'a2dp_control'
+            text: '>'
+            font_size: 24
+            pos: 240, 140
+            size_hint: .115, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
             on_press: app.play()
+            
 #NEXT BUTTON
         Button:
             id: 'a2dp_next'
             text: '>>'
             font_size: 24
-            pos: 400, 140
-            size_hint: .2, .1
+            pos: 340, 140
+            size_hint: .115, .1
             background_normal: ''
             background_color: 255, 0, 0, 0.1
             on_press: app.nextsong()

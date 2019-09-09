@@ -215,6 +215,8 @@ class MainApp(App):
         os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Next")
     def prevsong(self):
         os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Previous")
+    def pause(self):
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Pause")
 
     # The following function will be used to update a live traffic image that portrays
     # data on a commute in pierce county. The updating will be handled by a simple shell
@@ -222,6 +224,12 @@ class MainApp(App):
 
     def updateTrafficPic(self):
         os.system("bash updateTrafficPic.sh")
+    
+    # The following function will allow for the Raspberry Pi's screen to be turned off
+    # at the operator's will.
+
+    def screenOff(self):
+        os.popen("echo 0 > /sys/class/backlight/rpi_backlight/bl_power")
 
 volLvl = NumericProperty()
 
