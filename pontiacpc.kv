@@ -14,6 +14,7 @@ ScreenManagement:
     OBD2Screen:
     SettingsScreen:
     TrafficScreen:
+    OffScreen:
 
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
@@ -52,6 +53,7 @@ ScreenManagement:
     #Button for the A2DP Screen
         Button:
             on_release: app.root.current = 'a2dp'
+            on_release: root.manager.transition.direction = 'left'
 #            text: 'Bluetooth Media'
             font_size: 16
             pos: 0, 0
@@ -88,6 +90,7 @@ ScreenManagement:
     #Button for the Traffic screen
         Button:
             on_release: app.root.current = "traffic"
+            on_release: root.manager.transition.direction = 'left'
 #            text: 'Traffic'
             font_size: 16
             pos: 160, 0
@@ -102,13 +105,15 @@ ScreenManagement:
 
     #Button to shut off screen
         Button:
-            on_release: app.screenOff()
+            on_release: app.root.current = 'offscreen'
+            on_press: root.manager.transition.direction = 'down'
+            on_release: app.testingBtn()
             text: 'Screen off'
             font_size: 16
             pos: 330, -20
             size_hint: .2, .2
             background_normal: ''
-            background_color: 255, 0, 0, 0
+            background_color: 0, 0, 0, 0
 
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
@@ -182,6 +187,7 @@ ScreenManagement:
                     title: 'Traffic'
                     with_previous: True
                     on_release: app.root.current = 'main'
+                    on_press: root.manager.transition.direction = 'right'
                 ActionOverflow:
                     ActionButton:
                         text: 'Settings'
@@ -311,7 +317,7 @@ ScreenManagement:
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 
-#Begin section for A2DP Screen
+#Begin section for A2DP Screen actionbar
     ActionBar:
         background_color: 153,0,0,0.1
         pos_hint: {'top':1}
@@ -321,6 +327,7 @@ ScreenManagement:
                 title: 'A2DP'
                 with_previous: True
                 on_release: app.root.current = 'main'
+                on_press: root.manager.transition.direction = 'right'
 #            ActionOverflow:
 #                ActionButton:
 #                    text: 'Settings'
@@ -395,5 +402,28 @@ ScreenManagement:
                 ActionButton:
                     text: 'About'
 #End code for the Settings Screen
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# BEGIN CODE FOR "OFFSCREEN"
+
+<OffScreen>:
+    name: 'offscreen'
+    ClockText:
+        halign: 'left'
+        font_size: 72
+    Label:
+        font_size: 16
+        text: 'Tap anywhere on screen to go back to the Home Screen.'
+        pos: 330, -20
+        size_hint: .2, .2
+        width: self.width
+        halign: 'center'
+    #Button to shut off screen
+    Button:
+        on_release: app.root.current = 'main'
+        on_release: root.manager.transition.direction = 'up'
+        font_size: 16
+        background_normal: ''
+        background_color: 255, 0, 0, 0
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------

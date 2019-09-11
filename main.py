@@ -50,6 +50,9 @@ class SettingsScreen(Screen):
 class TrafficScreen(Screen):
     pass
 
+class OffScreen(Screen):
+    pass
+
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
@@ -230,6 +233,9 @@ class MainApp(App):
 
     def screenOff(self):
         os.popen("echo 0 > /sys/class/backlight/rpi_backlight/bl_power")
+
+    def testingBtn(self):
+        os.popen("notify-send 'button press success'")
 
 volLvl = NumericProperty()
 
