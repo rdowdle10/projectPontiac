@@ -9,7 +9,7 @@ echo "| _ \((_)((_) !(_)) ((_| |_   | _ \((_)_(_/(| |_ (_((_)_ ((_) ";
 echo "|  _| '_/ _ \| / -_/ _||  _|  |  _/ _ | ' \)|  _|| / _\` / _|  ";
 echo "|_| |_| \____/ \___\__| \__|  |_| \___|_||_| \__||_\__,_\__|  ";
 echo "           |__/                                               ";
-sleep 2s
+
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 # Begin the gathering of Traffic Data here:
@@ -46,14 +46,14 @@ fi
 # ---------------------------------------------------------------------
 # Download the map for traffic
 
-wget -q https://images.wsdot.wa.gov/traffic/flowmaps/tacoma.png -O tacoma.png
+wget -q https://images.wsdot.wa.gov/traffic/flowmaps/tacoma.png tacoma.png
 
 if [ -f tacoma.png ] ; then
     echo "Data download complete..."
 else
     cp no_connection.png tacoma.png
 fi
-sleep 1s
+
 
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
@@ -67,5 +67,5 @@ amixer sget Master | grep 'Right:' | awk -F'[][]' '{ print $2 }' | rev | cut -c 
 # ---------------------------------------------------------------------
 # Begin the main interface:
 echo "starting main program"
-sleep 1s
+
 python main.py

@@ -16,6 +16,7 @@ ScreenManagement:
     TrafficScreen:
     OffScreen:
 
+
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 #    ______ _                           _       
@@ -28,7 +29,7 @@ ScreenManagement:
 # ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 
-#Main menu screen. Contains buttons that lead to the other screens providing
+#Main menu screen. Contains buttons that lead to the other screens providing content
 <ClockText>:
 <ActionClock>:
     font_size: 26
@@ -137,12 +138,14 @@ ScreenManagement:
                 pos: self.pos
                 size: self.size
                 source: 'bg_traffic.jpg'
-        Image:
+        TrafficImage:
             id: 'traffic_img'
             pos: 300, 30
             size: 250, 400
             size_hint: .8, .8
-            source: 'tacoma.png'
+            background_color: 255,0,0
+            background_normal: 0,0,0,0
+
         Label:
             font_size: 14
             halign: 'left'
@@ -190,7 +193,8 @@ ScreenManagement:
                     on_press: root.manager.transition.direction = 'right'
                 ActionOverflow:
                     ActionButton:
-                        text: 'Settings'
+                        text: ' Update Traffic '
+                        on_press: root.updateTraffic()
                 ActionClock:
 
 # ---------------------------------------------------------------------

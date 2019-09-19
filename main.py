@@ -4,6 +4,7 @@ from kivy.uix.label import Label
 from kivy.uix.actionbar import ActionLabel
 from kivy.uix.slider import Slider
 from kivy.uix.widget import Widget
+from kivy.uix.image import Image
 from kivy.uix.screenmanager import ScreenManager, Screen, FadeTransition
 from kivy.base import runTouchApp
 from kivy.clock import Clock
@@ -22,6 +23,7 @@ from time import strftime
 import time
 import os
 import subprocess
+
 
 Window.size = (800, 480)
 
@@ -48,10 +50,24 @@ class SettingsScreen(Screen):
     pass
 
 class TrafficScreen(Screen):
+    traffic_img = Image(source='tacoma.png')
+
+    def updateTraffic(self):
+        subprocess.call("./update_traffic.sh")
+        self.canvas.ask_update()
+#        self.traffic_img.reload()
+
+#    def __init__(self, **kwargs):
+#        super(TrafficScreen, self).__init__(**kwargs)
+#        Clock.schedule_interval(self.update, 10)
+
+#    def update(self, *args):
+#        subprocess.call("./update_traffic.sh")
     pass
 
 class OffScreen(Screen):
     pass
+
 
 # ---------------------------------------------------------------------
 
@@ -66,6 +82,20 @@ class ClockText(Label):
 
     def update(self, *args):
         self.text = time.strftime('%I:%M%p')
+# ---------------------------------------------------------------------
+# ---------------------------------------------------------------------
+# Class for the Traffic Map Image
+
+class TrafficImage(Image):
+
+    def __init__(self, **kwargs):
+        super(TrafficImage, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+    def update(self, *args):
+        self.source = 'tacoma.png'
+        self.reload()
+
+# ---------------------------------------------------------------------
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------
@@ -117,15 +147,7 @@ class BlockedTraffic(Label):
         Clock.schedule_interval(self.update, 1)
     
     def update(self, *args):
-        # The following line takes a file and creates a NONETYPE output that is later converted
-        # to a string.
-#         cmd = subprocess.Popen(['cat', 'blockedtraffic'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-#        stdout,stderr = cmd.communicate()
-#        self.text = str(stdout)
-
         blktrff = os.popen("cat blockedtraffic").read()
-
         self.text = str(blktrff)
 
 class SpecialTraffic(Label):
@@ -134,12 +156,6 @@ class SpecialTraffic(Label):
         Clock.schedule_interval(self.update, 1)
     
     def update(self, *args):
-        # The following line takes a file and creates a NONETYPE output that is later converted
-        # to a string.
-#         cmd = subprocess.Popen(['cat', 'specialevents'], stdout=subprocess.PIPE, stderr=subprocess.STDOUT)
-
-#        stdout,stderr = cmd.communicate()
-#        self.text = str(stdout)
         spcltrff = os.popen("cat specialevents").read()
         self.text = str(spcltrff)
     
@@ -236,6 +252,8 @@ class MainApp(App):
 
     def testingBtn(self):
         os.popen("notify-send 'button press success'")
+
+
 
 volLvl = NumericProperty()
 
