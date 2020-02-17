@@ -177,6 +177,19 @@ class VolumeControl(Slider):
         #subprocess.call(["notify-send", level])
         subprocess.call(["amixer", "set", "Master", level + percent])
 
+class VolumeUp(Button):
+    def volUp(self, *args):
+        level = str('5')
+        percent = str("%")
+        up = str("+")
+        subprocess.call(["amixer", "set", "Master", level + percent + up])
+class VolumeDown(Button):
+    def volDown(self, *args):
+        level = str('5')
+        percent = str('%')
+        down = str('-')
+        subprocess.call(["amixer", "set", "Master", level + percent + down])
+
 # ---------------------------------------------------------------------
 
 # ---------------------------------------------------------------------

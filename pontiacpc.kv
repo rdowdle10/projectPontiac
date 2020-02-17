@@ -265,6 +265,26 @@ ScreenManagement:
             background_color: 255, 0, 0, 0.1
             on_press: app.nextsong()
 
+# Increase Volume Button
+        VolumeUp:
+            id: 'volumeup'
+            text: '+'
+            font_size: 24
+            pos: 240, 80
+            size_hint: .115, .1
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+            on_press: self.volUp()
+# Decrease Volume Button
+        VolumeDown:
+            id: 'volumedown'
+            text: '-'
+            font_size: 24
+            pos: 140, 80
+            size_hint: .115, .1
+            background_normal: ''
+            background_color: 255, 0, 0, 0.1
+            on_press: self.volDown()
 #LABEL FOR SONG NAME
         SongName:
             font_size: 24
@@ -299,20 +319,20 @@ ScreenManagement:
 # The slider works, but unfortunately upon startup, the application thinks that
 # system volume is at 0 when it's not. Will need to fix. Temporary bandaid is to
 # set the value at 40 for effect.
-        VolumeControl:
-            id: volslider
-            min: 0
-            max: 100
-            step: 5
-            orientation: 'vertical'
-            pos: 560, 150
-            size_hint: .5, .5
-            cursor_size: 28, 28
+#        VolumeControl:
+#            id: volslider
+#            min: 0
+#            max: 100
+#            step: 5
+#            orientation: 'vertical'
+#            pos: 560, 150
+#            size_hint: .5, .5
+#            cursor_size: 28, 28
 #            sensitivity: "handle"
-            value: 40
-            on_touch_move: self.volUpdate()
-            on_touch_down: self.volUpdate()
-            on_touch_up: self.volUpdate()
+#            value: 40
+#            on_touch_move: self.volUpdate()
+#            on_touch_down: self.volUpdate()
+#            on_touch_up: self.volUpdate()
 
 
 #        Label:
