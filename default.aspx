@@ -67,7 +67,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
 	<script type="text/javascript" src="/Traffic/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/Traffic/scripts/default.js"></script>
 	<form method="post" action="./default.aspx" id="aspnetForm">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="28EI5Dy8G0W5De59Ih3Y3NSwzpXYYgegLtA0p/j05Cqe5E6xY3dgTBpAYaBPhtAw4JIvhSIYaw8QLmsMHW7U0SKmiT1vL7WwRhOBQzWwC7k=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="IpirLW8I3AatgxPFz29/7T9a8Yb3t1uxZ6QTqMyGH72bhBk5EkW7wMZDBebjMQvPqMn7YNSLvRMxDdSb4PBet8Q6L71LBFvgsJGG7jbAhD4=" />
 
 <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="115A8484" />
 		<div id="wrapper" style="cornerg-bottom">
@@ -192,7 +192,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
         <h2 class="greyBg">
             Tacoma Alerts</h2>
         <div class="widgetdata" style="width: 335px">
-            <div id="IncidentDateTime">As of  2/17/2020 1:43 PM</div>
+            <div id="IncidentDateTime">As of  3/25/2020 10:51 PM</div>
 
             <div id="AmberDiv">
                 
@@ -201,7 +201,9 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             <div class="AlertHeader">Blocking Incidents</div>
             <ul class="content IncidentList" id="BlockingUList">
                 
-                        <li>None reported</li>
+                        <li>Road work on I-5 both directions from milepost 123 near Berkeley St SW to milepost 122 near Lakewood South City Limits beginning at 8:25 pm on March 25, 2020 until about 4:30 am on March 26, 2020. </li>
+                    
+                        <li>Road work on I-5 northbound at milepost 123.58 near Thorne Lane SW beginning at 8:27 pm on March 25, 2020 until about 4:30 am on March 26, 2020. </li>
                     
             </ul>
 
@@ -215,7 +217,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             <div class="AlertHeader">Special Events</div>
             <ul class="content IncidentList" id="SpecialUList">
                 
-                        <li>Travelers who use I-5, I-705, SR 7, SR 509 and local streets approaching downtown Tacoma may experience increased traffic volumes due to Tacoma Dome events from 3 p.m. to 9 p.m. Monday, Feb. 17.</li>
+                        <li>None reported</li>
                     
             </ul>
 
@@ -414,11 +416,11 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             
                 <ul>
                 
-                    <li><a href="https://www.wsdot.wa.gov/news/2020/02/13/plan-ahead-extended-ramp-closure-planned-us-101-shelton-matlock-road-interchange">Plan ahead: Extended ramp closure planned for US 101 - Shelton Matlock Road interchange </a></li>
+                    <li><a href="https://www.wsdot.wa.gov/news/2020/03/25/declining-ridership-due-covid-19-brings-change-amtrak-cascades-trains">Declining ridership due to COVID-19 brings change to Amtrak Cascades trains </a></li>
                 
-                    <li><a href="https://www.wsdot.wa.gov/news/2020/02/11/paving-project-comes-us-101-near-hoquiam">Paving project comes to US 101 near Hoquiam</a></li>
+                    <li><a href="https://www.wsdot.wa.gov/news/2020/03/23/state-ferries-remain-winter-sailing-schedules-through-april-25-due-lower-demand">State ferries to remain on winter sailing schedules through April 25 due to lower demand</a></li>
                 
-                    <li><a href="https://www.wsdot.wa.gov/news/2020/02/09/sr-706-pierce-county-remain-closed-until-further-notice-due-landslide-risk">SR 706 in Pierce County to remain closed until further notice due to landslide risk</a></li>
+                    <li><a href="https://www.wsdot.wa.gov/news/2020/03/02/construction-improve-safety-kicks-us-101-and-lower-hoh-road-jefferson-county">Construction to improve safety kicks off at US 101 and Lower Hoh Road in Jefferson County </a></li>
                 
                 </ul>
                 

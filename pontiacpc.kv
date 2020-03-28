@@ -10,7 +10,7 @@
 
 ScreenManagement:
     MainMenu:
-    A2DPScreen:
+#    A2DPScreen:
     OBD2Screen:
     SettingsScreen:
     TrafficScreen:
@@ -42,7 +42,10 @@ ScreenManagement:
             Rectangle:
                 pos: self.pos
                 size: self.size
-                source: 'bg_pont.jpg'
+                #The next line shows the firebird as the background. Should be changed to all black for
+                #the most recent design.
+                #source: 'bg_pont.jpg'
+                source: 'bg_black.png'
                 
     #Label for the clock (updated in main.py):
         ClockText:
@@ -50,22 +53,71 @@ ScreenManagement:
             id: clocktext
             size: self.texture_size
             pos: 300, -210
+    
+    ###############################################################
+    #Create section of screen for Audio Playback
+        FloatLayout:
+            canvas:
+                Rectangle:
+                    pos: 20, 80
+                    size: 360, 380
+                    source: 'a2dp_menubg.png'
+            Button:
+                id: 'a2dp_prev'
+                text: '<<'
+                font_size: 24
+                pos: 23, 100
+                size_hint: .105, .1
+                background_normal: ''
+                background_color: 255, 0, 0, 0.1
+                on_press: app.prevsong()
+            
+            Button:
+                id: 'a2dp_control'
+                text: '||'
+                font_size: 24
+                pos: 113, 100
+                size_hint: .105, .1
+                background_normal: ''
+                background_color: 255, 0, 0, 0.1
+                on_press: app.pause()
 
+            Button:
+                id: 'a2dp_control'
+                text: '>'
+                font_size: 24
+                pos: 203, 100
+                size_hint: .105, .1
+                background_normal: ''
+                background_color: 255, 0, 0, 0.1
+                on_press: app.play()
+
+            Button:
+                id: 'a2dp_next'
+                text: '>>'
+                font_size: 24
+                pos: 293, 100
+                size_hint: .105, .1
+                background_normal: ''
+                background_color: 255, 0, 0, 0.1
+                on_press: app.nextsong()
+
+    ###############################################################
     #Button for the A2DP Screen
-        Button:
-            on_release: app.root.current = 'a2dp'
-            on_release: root.manager.transition.direction = 'left'
-#            text: 'Bluetooth Media'
-            font_size: 16
-            pos: 0, 0
-            size_hint: .2, .2
-            background_normal: ''
-            background_color: 255, 0, 0, 0
-            Image:
-                source: 'bt_audio.png'
-                center_x: self.parent.center_x
-                center_y: self.parent.center_y
-                size: 72, 72
+    #    Button:
+    #        on_release: app.root.current = 'a2dp'
+    #        on_release: root.manager.transition.direction = 'left'
+    #        text: 'Bluetooth Media'
+    #        font_size: 16
+    #        pos: 0, 0
+    #        size_hint: .2, .2
+    #        background_normal: ''
+    #        background_color: 255, 0, 0, 0
+    #        Image:
+    #            source: 'bt_audio.png'
+    #            center_x: self.parent.center_x
+    #            center_y: self.parent.center_y
+    #            size: 72, 72
 
     #Button for the OBDII Screen
 #        Button:
