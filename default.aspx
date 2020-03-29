@@ -67,7 +67,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
 	<script type="text/javascript" src="/Traffic/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/Traffic/scripts/default.js"></script>
 	<form method="post" action="./default.aspx" id="aspnetForm">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="IpirLW8I3AatgxPFz29/7T9a8Yb3t1uxZ6QTqMyGH72bhBk5EkW7wMZDBebjMQvPqMn7YNSLvRMxDdSb4PBet8Q6L71LBFvgsJGG7jbAhD4=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="1V9lollPXT78NaXgcnposgVrd4dzaNV9fiVtMEnINVVQxc/oh2yzw3MaZhyttT9ZADUwil+wgERi6Iq656U3aPlvLab065/rbnVDdfjw1NI=" />
 
 <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="115A8484" />
 		<div id="wrapper" style="cornerg-bottom">
@@ -192,7 +192,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
         <h2 class="greyBg">
             Tacoma Alerts</h2>
         <div class="widgetdata" style="width: 335px">
-            <div id="IncidentDateTime">As of  3/25/2020 10:51 PM</div>
+            <div id="IncidentDateTime">As of  3/28/2020 7:56 PM</div>
 
             <div id="AmberDiv">
                 
@@ -201,9 +201,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             <div class="AlertHeader">Blocking Incidents</div>
             <ul class="content IncidentList" id="BlockingUList">
                 
-                        <li>Road work on I-5 both directions from milepost 123 near Berkeley St SW to milepost 122 near Lakewood South City Limits beginning at 8:25 pm on March 25, 2020 until about 4:30 am on March 26, 2020. </li>
-                    
-                        <li>Road work on I-5 northbound at milepost 123.58 near Thorne Lane SW beginning at 8:27 pm on March 25, 2020 until about 4:30 am on March 26, 2020. </li>
+                        <li>Severe Side Winds on SR 16 both directions at milepost 7.8 near Tacoma Narrows Bridge Mid-Span beginning at 1:44 pm on March 28, 2020 until further notice. </li>
                     
             </ul>
 
@@ -416,11 +414,11 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             
                 <ul>
                 
+                    <li><a href="https://www.wsdot.wa.gov/news/2020/03/26/state-ferries-reduce-service-central-puget-sound-beginning-sunday-march-29">State ferries to reduce service in central Puget Sound beginning Sunday, March 29</a></li>
+                
                     <li><a href="https://www.wsdot.wa.gov/news/2020/03/25/declining-ridership-due-covid-19-brings-change-amtrak-cascades-trains">Declining ridership due to COVID-19 brings change to Amtrak Cascades trains </a></li>
                 
                     <li><a href="https://www.wsdot.wa.gov/news/2020/03/23/state-ferries-remain-winter-sailing-schedules-through-april-25-due-lower-demand">State ferries to remain on winter sailing schedules through April 25 due to lower demand</a></li>
-                
-                    <li><a href="https://www.wsdot.wa.gov/news/2020/03/02/construction-improve-safety-kicks-us-101-and-lower-hoh-road-jefferson-county">Construction to improve safety kicks off at US 101 and Lower Hoh Road in Jefferson County </a></li>
                 
                 </ul>
                 

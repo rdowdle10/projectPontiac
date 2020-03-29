@@ -56,12 +56,21 @@ ScreenManagement:
     
     ###############################################################
     #Create section of screen for Audio Playback
+        #... but first create an app section
+        FloatLayout:
+            canvas:
+                Rectangle:
+                    pos: 420, 160
+                    size: 360, 240
+                    source: 'app_menubg.png'
+
         FloatLayout:
             canvas:
                 Rectangle:
                     pos: 20, 80
                     size: 360, 380
                     source: 'a2dp_menubg.png'
+
             Button:
                 id: 'a2dp_prev'
                 text: '<<'
