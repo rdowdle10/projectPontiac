@@ -60,10 +60,11 @@ ScreenManagement:
         FloatLayout:
             canvas:
                 Rectangle:
-                    pos: 420, 160
+                    pos: 420, 220
                     size: 360, 240
                     source: 'app_menubg.png'
-
+        
+        #a2dp controls
         FloatLayout:
             canvas:
                 Rectangle:
@@ -112,23 +113,8 @@ ScreenManagement:
                 on_press: app.nextsong()
 
     ###############################################################
-    #Button for the A2DP Screen
-    #    Button:
-    #        on_release: app.root.current = 'a2dp'
-    #        on_release: root.manager.transition.direction = 'left'
-    #        text: 'Bluetooth Media'
-    #        font_size: 16
-    #        pos: 0, 0
-    #        size_hint: .2, .2
-    #        background_normal: ''
-    #        background_color: 255, 0, 0, 0
-    #        Image:
-    #            source: 'bt_audio.png'
-    #            center_x: self.parent.center_x
-    #            center_y: self.parent.center_y
-    #            size: 72, 72
 
-    #Button for the OBDII Screen
+#Button for the OBDII Screen
 #        Button:
 #            on_release: app.root.current = 'obd2'
 #            text: 'OBD2 Data'
@@ -139,23 +125,13 @@ ScreenManagement:
 #            background_color: 255, 0, 0, 0.1
 
 
-    #Button for the Settings Screen
-#        Button:
-#            on_release: app.root.current = "settings"
-#            text: 'Settings'
-#            font_size: 16
-#            pos: 0, 200
-#           size_hint: .2, .2
-#            background_normal: ''
-#            background_color: 255, 0, 0, 0.1
-
-    #Button for the Traffic screen
+#Button for the Traffic screen
         Button:
             on_release: app.root.current = "traffic"
             on_release: root.manager.transition.direction = 'left'
-#            text: 'Traffic'
+#           text: 'Traffic'
             font_size: 16
-            pos: 160, 0
+            pos: 400, 360
             size_hint: .2, .2
             background_normal: ''
             background_color: 255, 0, 0, 0
@@ -164,8 +140,39 @@ ScreenManagement:
                 center_x: self.parent.center_x
                 center_y: self.parent.center_y
                 size: 72, 72
+#LABEL FOR SONG NAME
+        SongName:
+            font_size: 24
+            halign: 'left'
+            id: songname
+            size: 42, 300
+            pos: -200, 180
+            text_size: 300, None
+            markup: True
+            #shorten: True
+            text:'Sorta Long Song Title Blah Blah Blah Bleh Blah'
 
-    #Button to shut off screen
+#LABEL FOR SONG ARTIST
+        SongArtist:
+            font_size: 18
+            halign: 'left'
+            id: songartist
+            size: self.texture_size
+            pos: -200, 130
+            text_size: 300, None
+            text: 'Song Artist Goes Here'
+
+#LABEL FOR SONG ALBUM
+        SongAlbum:
+            font_size: 18
+            halign: 'left'
+            id: songalbum
+            size: self.texture_size
+            pos: -200, 85
+            text_size: 300, None
+            text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
+
+#Button to shut off screen
         Button:
             on_release: app.root.current = 'offscreen'
             on_press: root.manager.transition.direction = 'down'

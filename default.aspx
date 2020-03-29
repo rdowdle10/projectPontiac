@@ -67,7 +67,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
 	<script type="text/javascript" src="/Traffic/scripts/jquery-ui.min.js"></script>
 	<script type="text/javascript" src="/Traffic/scripts/default.js"></script>
 	<form method="post" action="./default.aspx" id="aspnetForm">
-<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="1V9lollPXT78NaXgcnposgVrd4dzaNV9fiVtMEnINVVQxc/oh2yzw3MaZhyttT9ZADUwil+wgERi6Iq656U3aPlvLab065/rbnVDdfjw1NI=" />
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="/o6hfK92rawm1+oZPu2wZ5moRqGoFtwdp+jM7VIo381j4JQtTUb3AiRxla1PIvgnNxT4BPSs9OHvpkfGuYxmZvGEZVYyAhYCxLQi8bp+r1k=" />
 
 <input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="115A8484" />
 		<div id="wrapper" style="cornerg-bottom">
@@ -192,7 +192,7 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
         <h2 class="greyBg">
             Tacoma Alerts</h2>
         <div class="widgetdata" style="width: 335px">
-            <div id="IncidentDateTime">As of  3/28/2020 7:56 PM</div>
+            <div id="IncidentDateTime">As of  3/28/2020 9:30 PM</div>
 
             <div id="AmberDiv">
                 
@@ -201,6 +201,8 @@ ga('require', 'linker');ga('linker:autoLink', ['wsdot.com']);ga('send', 'pagevie
             <div class="AlertHeader">Blocking Incidents</div>
             <ul class="content IncidentList" id="BlockingUList">
                 
+                        <li>Update 9:28 PM : On SR 167 southbound just south of Ellingson Rd (MP 12) there is a collision partially blocking the right lane.  The State Patrol has arrived on the scene.</li>
+                    
                         <li>Severe Side Winds on SR 16 both directions at milepost 7.8 near Tacoma Narrows Bridge Mid-Span beginning at 1:44 pm on March 28, 2020 until further notice. </li>
                     
             </ul>
