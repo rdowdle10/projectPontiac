@@ -1,0 +1,345 @@
+# Screen Management
+
+ScreenManagement:
+    MainMenu:
+    MediaScreen:
+    TrafficScreen:
+    TrafficScreenAll:
+    TrafficScreenTacoma:
+    TrafficScreenSeattle:
+    SkimmerScanner:
+    AllApps:
+    OffScreen:
+
+<ClockText>:
+    font_size: 72
+    halign: 'right'
+    size: 50, 100
+
+<ActionClock>:
+    font_size: 32
+    halign: 'right'
+    size: self.texture_size
+
+# Volume buttons
+
+<VolUp>:
+    source: 'elements/volup.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: self.volUp()
+    pos: 12, 308
+
+<VolMute>:
+    source: 'elements/mute.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.test()
+    pos: 12, 234
+
+<AudioCancel>:
+    source: 'elements/cancel.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.test()
+    pos: 12, 160
+
+<VolDown>:
+    source: 'elements/voldown.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: self.volDown()
+    pos: 12, 86
+    
+<Reload>:
+    source: 'elements/reload.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.test()
+    pos: 12, 24
+
+<Previous>:
+    source: 'elements/prev.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.prevsong()
+    pos: 350, 24
+
+<Play>:
+    source: 'elements/play.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.play()
+    pos: 450, 24
+
+<Pause>:
+    source: 'elements/pause.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.pause()
+    pos: 550, 24
+
+<Next>:
+    source: 'elements/next.png'
+    size_hint: 0.0925, 0.15416667
+    on_press: app.nextsong()
+    pos: 650, 24
+
+
+# Dock Buttons
+
+<AllAppsBtn>:
+    source: 'elements/allapps.png'
+    size_hint: 0.125, 0.20833333
+    on_press: app.test()
+    pos: 176, 12
+
+<MediaScreenBtn>:
+    source: 'elements/a2dp.png'
+    size_hint: 0.125, 0.20833333
+    on_press: app.test()
+    pos: 300, 12
+
+<TrafficScreenBtn>:
+    source: 'elements/traffic.png'
+    size_hint: 0.125, 0.20833333
+    on_press: app.test()
+    pos: 424, 12
+
+<SkimmerScannerBtn>:
+    source: 'elements/skimscan.png'
+    size_hint: 0.125, 0.20833333
+    on_press: app.test()
+    pos: 548, 12
+
+<OffScreen>:
+    name: 'offscreen'
+    ClockText:
+    Label:
+        font_size: 16
+        text: 'Tap anywhere on screen to go back Home'
+        pos: 330, -20
+        size_hint: .2, .2
+        width: self.width
+        halign: 'center'
+    Button:
+        on_release: app.root.current = 'main'
+        font_size: 16
+        background_normal: ''
+        background_color: 255, 0, 0, 0
+
+<MainMenu>:
+    name: 'main'
+    FloatLayout:
+        index: '0'
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'elements/bg2.jpg'
+                on_load: app.cautionPopup()
+        VolUp:
+        VolMute:
+        AudioCancel:
+        VolDown:
+        AllAppsBtn:
+        MediaScreenBtn:
+            on_release: app.root.current = 'media'
+            on_press: root.manager.transition.direction = 'left'
+        TrafficScreenBtn:
+            on_release: app.root.current = 'trafficTacoma'
+            on_press: root.manager.transition.direction = 'left'
+        SkimmerScannerBtn:
+        ActionBar:
+            background_color: 0,0,0,0.8
+            pos_hint: {'top':1}
+            ActionView:
+                use_separator: True
+                ActionOverflow:
+                    ActionButton:
+                        text: 'Settings'
+                    ActionButton:
+                        text: 'About'
+                        on_press: app.aboutBtn()
+                    ActionButton:
+                        text: 'Power...'
+                        on_press: app.powerPopup()
+                ActionPrevious:
+                    #title: 'Turn Screen Off'
+                    with_previous: True
+                    app_icon: 'elements/empty.png'
+                    #app_icon_width: 3
+                    on_release: app.root.current = 'offscreen'
+                    on_press: root.manager.transition.direction = 'right'
+                    
+                ActionClock:
+        
+<MediaScreen>:
+    name: 'media'
+    FloatLayout:
+        index: '0'
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'bg_media.png'
+    ActionBar:
+        background_color: 153,0,0,0.1
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                #title: 'Bluetooth Media'
+                app_icon: 'elements/home_label.png'
+                with_previous: True
+                on_release: app.root.current = 'main'
+                on_press: root.manager.transition.direction = 'right'
+            ActionClock:
+    #LABEL FOR SONG NAME
+    SongName:
+        font_size: 24
+        halign: 'left'
+        id: songname
+        size: 42, 300
+        pos: 0, 100
+        text_size: 500, None
+        markup: True
+        #shorten: True
+        text:'Sorta Long Song Title Blah Blah Blah Bleh Blah'
+
+    #LABEL FOR SONG ARTIST
+    SongArtist:
+        font_size: 18
+        halign: 'left'
+        id: songartist
+        size: self.texture_size
+        pos: 0, 75
+        text_size: 500, None
+        text: 'Song Artist Goes Here'
+
+    #LABEL FOR SONG ALBUM
+    SongAlbum:
+        font_size: 18
+        halign: 'left'
+        id: songalbum
+        size: self.texture_size
+        pos: 0, 50
+        text_size: 500, None
+        text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
+
+    VolumeLevel:
+        font_size: 36
+        halign: 'right'
+        id: volumelevel
+        size: self.texture_size
+        pos: -560, -200
+        text_size: 500, None
+
+    VolUp:
+    VolMute:
+    AudioCancel:
+    VolDown:
+    Previous:
+    Play:
+    Pause:
+    Next:
+
+<TrafficScreenTacoma>:
+    name: 'trafficTacoma'
+    #index: '0'
+
+    FloatLayout:
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'bg_traffic.jpg'
+        TrafficImage:
+            id: 'traffic_img'
+            pos: 300, 30
+            size: 250, 400
+            size_hint: .8, .8
+            background_color: 255,0,0
+            background_normal: 0,0,0,0
+
+        Label:
+            font_size: 14
+            halign: 'left'
+            pos: 0, -230
+            #text_size: root.width, None
+            text: 'Data is loaded from WSDOT every time car is started up and connected to the internet.'
+        ActionBar:
+            background_color: 0,0,0,1
+            pos_hint: {'top':1}
+            ActionView:
+                use_separator: True
+                ActionOverflow:
+                    ActionButton:
+                        text: 'Seattle Traffic'
+                    ActionButton:
+                        text: 'All Traffic'
+                        on_release: app.root.current = 'trafficAll'
+                        on_press: root.manager.transition.direction = 'left'
+                    ActionButton:
+                        text: 'About...'
+                        on_press: app.aboutBtn()
+                ActionPrevious:
+                    #title: 'Bluetooth Media'
+                    app_icon: 'elements/home_label.png'
+                    with_previous: True
+                    on_release: app.root.current = 'main'
+                    on_press: root.manager.transition.direction = 'right'
+                ActionClock:
+
+        ScrollView:
+            pos: 65, 0
+            index: '1'
+            do_scroll_x: False
+            do_scroll_y: True
+            size_hint_y: 0.87
+            size_hint_x: 0.5
+
+            TrafficTacoma:
+                pos: -200, 0
+                size_hint_y: None
+                text_size: 350, None
+                height: self.texture_size[1]
+                padding: 10, 10
+    VolUp:
+    VolMute:
+    AudioCancel:
+    VolDown:
+    Reload:
+
+<TrafficScreenAll>:
+    name: 'trafficAll'
+    index: '0'
+
+    FloatLayout:
+        canvas:
+            Rectangle:
+                pos: self.pos
+                size: self.size
+                source: 'bg_traffic.jpg'
+    ActionBar:
+        background_color: 0,0,0,1
+        pos_hint: {'top':1}
+        ActionView:
+            use_separator: True
+            ActionPrevious:
+                app_icon: 'elements/back.png'
+                with_previous: True
+                on_release: app.root.current = 'trafficTacoma'
+                on_press: root.manager.transition.direction = 'right'
+            ActionClock:
+    VolUp:
+    VolMute:
+    AudioCancel:
+    VolDown:
+    Reload:
+
+    ScrollView:
+        index: '1'
+        do_scroll_x: False
+        do_scroll_y: True
+        size_hint_y: 0.9
+
+        TrafficAll:
+            size_hint_y: None
+            text_size: 600, None
+            height: self.texture_size[1]
+            padding: 10, 10
+
+

@@ -2,6 +2,7 @@ from kivy.app import App
 from kivy.lang import Builder
 from kivy.uix.label import Label
 from kivy.uix.actionbar import ActionLabel
+from kivy.uix.behaviors import ButtonBehavior
 from kivy.uix.slider import Slider
 from kivy.uix.widget import Widget
 from kivy.uix.image import Image
@@ -16,6 +17,12 @@ from kivy.properties import StringProperty
 from kivy.uix.slider import Slider
 from kivy.properties import ObjectProperty
 from kivy.properties import NumericProperty
+from kivy.uix.boxlayout import BoxLayout
+from kivy.uix.popup import Popup, PopupException
+from kivy.uix.gridlayout import GridLayout
+from kivy.uix.button import Button
+from kivy.uix.scrollview import ScrollView
+from kivy.app import runTouchApp
 from datetime import (
     datetime, timedelta
 )
@@ -24,57 +31,204 @@ import time
 import os
 import subprocess
 
+# Importing BeautifulSoup modules
+from bs4 import BeautifulSoup
+import shutil
+import requests
+import string
+import fileinput
+import os.path
+from os import path
+import sys
 
+# First things first: Attempt to initiate traffic information download...
+# Grab URLs for the pages we are going to use to scrape information from.
+url_tac = 'https://www.wsdot.com/traffic/trafficalerts/tacoma.aspx'
+url_wsdot = 'https://www.wsdot.com/traffic/trafficalerts/printer.aspx'
+tacoma_pic = 'https://images.wsdot.wa.gov/traffic/flowmaps/tacoma.png'
+
+# Now we download the map for Puget Sound...
+def dlIMG():
+    try:
+        resp = requests.get(tacoma_pic, stream=True)
+        with open('tacoma.png', 'wb') as img_file:
+            shutil.copyfileobj(resp.raw, img_file)
+        del resp
+    except requests.exceptions.RequestException as e:
+        print('failed')
+
+
+# Function to grab traffic information...
+def trafficRet():
+    try:
+        traffic_raw_wsdot = requests.get(url_wsdot)
+    except requests.exceptions.RequestException as e:
+        export_data = open("data_all", "w+")
+        export_data.write("No connection \n")
+        print("No connection for all")
+        export_data.close()
+        export_tacoma_data = open("tacoma_data", "w+")
+        export_tacoma_data.write("No connection \n")
+        print("No connection to get Tacoma data")
+        export_tacoma_data.close()
+        return
+
+    traffic = BeautifulSoup(traffic_raw_wsdot.text, 'html.parser')
+    # Remove any and all <a> elements in the page
+    [x.extract() for x in traffic.find_all('a')]
+
+    # Find all div's that contain the information we want...
+    all_useful_info = traffic.find("div", class_="printerList")
+
+    # Then print the output... (when uncommented)
+    all_data_cont = all_useful_info.get_text()
+    #print(all_data_cont)
+
+    # Once we get our data, we must put it in a file
+    export_data = open("data_all", "w+")
+    export_data.write(all_data_cont)
+    export_data.close()
+
+    # The following section is for traffic in Tacoma
+    try:
+        traffic_raw_tac = requests.get(url_tac)
+    except requests.exceptions.RequestException as e:
+        export_tacoma_data = open("tacoma_data", "w+")
+        export_tacoma_data.write("No connection \n")
+        return
+        #raise SystemExit(e)
+
+    tacoma_traffic = BeautifulSoup(traffic_raw_tac.text, 'html.parser')
+    # Remove any and all <a> elements in the page
+    [x.extract() for x in tacoma_traffic.find_all('a')]
+    [x.extract() for x in tacoma_traffic.find("div", class_="situationHeader")]
+
+    # Find all of the <div> elements with the "situationDiv" class. These contain
+    # the desired information in this website's case.
+    all_tacoma_info = tacoma_traffic.find("div", class_="situationDiv")
+    #print(all_tacoma_info)
+
+    # Grab all text after parsing is complete.
+    tacoma_data_cont = all_tacoma_info.get_text()
+
+    # Remove the whitespace in the beginning of the output for traffic.
+    tacoma_data_final = tacoma_data_cont.lstrip()
+    #print(tacoma_data_final)
+
+    # Export all of the above work into a file
+    export_tacoma_data = open("tacoma_data", "w+")
+    export_tacoma_data.write(tacoma_data_final)
+    export_tacoma_data.close()
+
+    # For whatever reason, the file printed contains unnecessary \n, so we will be modifying
+    # the file to remove them
+    counter = 0
+    for line in fileinput.input('tacoma_data', inplace=True):
+        if not counter:
+            if line.startswith('HIGHEST IMPACT'):
+                counter = 3
+            else:
+                print(line, end='')
+        else:
+            counter -= 1
+
+    counter = 0
+    for line in fileinput.input('tacoma_data', inplace=True):
+        if not counter:
+            if line.startswith('HIGH IMPACT'):
+                counter = 3
+            else:
+                print(line, end='')
+        else:
+            counter -= 1
+
+    counter = 0
+    for line in fileinput.input('tacoma_data', inplace=True):
+        if not counter:
+            if line.startswith('MODERATE IMPACT'):
+                counter = 3
+            else:
+                print(line, end='')
+        else:
+            counter -= 1
+
+    counter = 0
+    for line in fileinput.input('tacoma_data', inplace=True):
+        if not counter:
+            if line.startswith('LOW IMPACT'):
+                counter = 3
+            else:
+                print(line, end='')
+        else:
+            counter -= 1
+
+    counter = 0
+    for line in fileinput.input('tacoma_data', inplace=True):
+        if not counter:
+            if line.startswith('LOWEST IMPACT'):
+                counter = 3
+            else:
+                print(line, end='')
+        else:
+            counter -= 1
+
+class TrafficImage(Image):
+    def __init__(self, **kwargs):
+        super(TrafficImage, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 30)
+        self.source = 'tacoma.png'
+    def update(self, *args):
+        try:
+            resp = requests.get(tacoma_pic, stream=True)
+            with open('tacoma.png', 'wb') as img_file:
+                shutil.copyfileobj(resp.raw, img_file)
+            del resp
+
+            self.source = 'tacoma.png'
+            self.reload()
+
+        except requests.exceptions.RequestException as e:
+            self.source = 'no_connection.png'
+            self.reload()
+
+
+# Creating the window, complete with size and page management.
 Window.size = (800, 480)
 
-# ---------------------------------------------------------------------
-# Screenmanager to manage the individual screens
 class ScreenManagement(ScreenManager):
     pass
 
-# The creation of the individual screens that will be a part of
-# the app.
 class MainMenu(Screen):
     pass
 
-class A2DPScreen(Screen):
-    def volUpdate(self, *args):
-        level = self.value
-        subprocess.call(["notify-send", level])
-    pass
-
-class OBD2Screen(Screen):
-    pass
-
-class SettingsScreen(Screen):
+class MediaScreen(Screen):
     pass
 
 class TrafficScreen(Screen):
-    traffic_img = Image(source='tacoma.png')
+    pass
 
-    def updateTraffic(self):
-        subprocess.call("./update_traffic.sh")
-        self.canvas.ask_update()
-#        self.traffic_img.reload()
+class TrafficScreenAll(Screen):
+    pass
 
-#    def __init__(self, **kwargs):
-#        super(TrafficScreen, self).__init__(**kwargs)
-#        Clock.schedule_interval(self.update, 10)
+class TrafficScreenTacoma(Screen):
+    pass
 
-#    def update(self, *args):
-#        subprocess.call("./update_traffic.sh")
+class TrafficScreenSeattle(Screen):
+    pass
+
+class SkimmerScanner(Screen):
+    pass
+
+class AllApps(Screen):
     pass
 
 class OffScreen(Screen):
     pass
 
+#####################################################################
 
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# The class for the clock label that will be displayed all around
-# the app. It calls on itself to avoid any execution issues in the main
-# App class (ClockText)
+# This class is the basis of the clock that will
+# be displayed on the main screen.
 class ClockText(Label):
     def __init__(self, **kwargs):
         super(ClockText, self).__init__(**kwargs)
@@ -82,129 +236,8 @@ class ClockText(Label):
 
     def update(self, *args):
         self.text = time.strftime('%I:%M%p')
-# ---------------------------------------------------------------------
-# ---------------------------------------------------------------------
-# Class for the Traffic Map Image
 
-class TrafficImage(Image):
-
-    def __init__(self, **kwargs):
-        super(TrafficImage, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-    def update(self, *args):
-        self.source = 'tacoma.png'
-        self.reload()
-
-# ---------------------------------------------------------------------
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# This particular class will be the Label that outputs the song information in the App using dbus...
-#'dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_' + bluetoothdevicemac + '/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track'
-# The above monster of a line of code will be used to gather data on media being played through the speakers...
-
-class SongAlbum(Label):
-    def __init__(self, **kwargs):
-        super(SongAlbum, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-
-    def update(self, *args):
-        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Album | grep variant | cut -b 43-500").read()
-
-        self.text = str(bluetoothdataraw)
-
-class SongName(Label):
-    def __init__(self, **kwargs):
-        super(SongName, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-
-    def update(self, *args):
-        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Title | grep variant | cut -b 43-500").read()
-        
-        self.text = str(bluetoothdataraw)
-
-class SongArtist(Label):
-    def __init__(self, **kwargs):
-        super(SongArtist, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-
-    def update(self, *args):
-        bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Artist | grep variant | cut -b 43-500").read()
-        
-        self.text = str(bluetoothdataraw)
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# The following classes are to be used for labels that contain information gathered from the
-# Washington Department of Transportation.
-class BlockedTraffic(Label):
-    def __init__(self, **kwargs):
-        super(BlockedTraffic, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-    
-    def update(self, *args):
-        blktrff = os.popen("cat blockedtraffic").read()
-        self.text = str(blktrff)
-
-class SpecialTraffic(Label):
-    def __init__(self, **kwargs):
-        super(SpecialTraffic, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
-    
-    def update(self, *args):
-        spcltrff = os.popen("cat specialevents").read()
-        self.text = str(spcltrff)
-    
-#    def newupdate(self, *args):
-#        # Different way to read text from output?
-#        specialTraffic = os.popen("cat default.aspx | grep -i -A 2 SpecialU | grep li | cut -b 29-500").read()
-#        
-#        self.text = str(specialTraffic)
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# Brainstorming space for volume control...
-
-class VolumeControl(Slider):
-    def volUpdate(self, *args):
-        level = str(self.value)
-        percent = str("%")
-        #subprocess.call(["notify-send", level])
-        subprocess.call(["amixer", "set", "Master", level + percent])
-
-class VolumeUp(Button):
-    def volUp(self, *args):
-        level = str('5')
-        percent = str("%")
-        up = str("+")
-        subprocess.call(["amixer", "set", "Master", level + percent + up])
-class VolumeDown(Button):
-    def volDown(self, *args):
-        level = str('5')
-        percent = str('%')
-        down = str('-')
-        subprocess.call(["amixer", "set", "Master", level + percent + down])
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-
-
-# ---------------------------------------------------------------------
-# TODO: Create a class for a label that takes the output of
-# cat default.aspx | grep -i -A 2 SpecialU | grep li | cut -b 29-500 | sed "s/'</li>'/"
-# cat default.aspx | grep -i -A 2 BlockingU | grep li | cut -b 29-500 | sed "s/'</li>'/"
-# So that it is displayed once information is downloaded off of the WASHDOT website...
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# Class for a clock label that will be displayed on the actionbar (ActionClock)
+# Now for the clock that will be on the top bar of every screen
 class ActionClock(ActionLabel):
     def __init__(self, **kwargs):
         super(ActionClock, self).__init__(**kwargs)
@@ -213,34 +246,209 @@ class ActionClock(ActionLabel):
     def update(self, *args):
         self.text = time.strftime('%I:%M%p')
 
+# Label for traffic data for all of WA
+class TrafficAll(Label):
+    def __init__(self, **kwargs):
+        super(TrafficAll, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+    
+    def update(self, *args):
+        spcltrff = os.popen("cat data_all").read()
+        self.text = str(spcltrff)
+
+class TrafficTacoma(Label):
+    def __init__(self, **kwargs):
+        super(TrafficTacoma, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+    
+    def update(self, *args):
+        spcltrff = os.popen("cat tacoma_data").read()
+        self.text = str(spcltrff)
+#####################################################################
+
+
+
+# Volume control buttons
+
+class VolUp(ButtonBehavior, Image):
+    def volUp(self, *args):
+        level = str('5')
+        percent = str("%")
+        up = str("+")
+        subprocess.call(["amixer", "set", "Master", level + percent + up])
+
+    #pass
+
+class VolMute(ButtonBehavior, Image):
+    pass
+
+class AudioCancel(ButtonBehavior, Image):
+    pass
+
+class VolDown(ButtonBehavior, Image):
+    def volDown(self, *args):
+        level = str('5')
+        percent = str('%')
+        down = str('-')
+        subprocess.call(["amixer", "set", "Master", level + percent + down])    
+    #pass
+
+class Reload(ButtonBehavior, Image):
+    pass
+
+class Play(ButtonBehavior, Image):
+    pass
+
+class Pause(ButtonBehavior, Image):
+    pass
+
+class Next(ButtonBehavior, Image):
+    pass
+
+class Previous(ButtonBehavior, Image):
+    pass
+
+
+#####################################################################
+
+# Dock buttons
+
+class MediaScreenBtn(ButtonBehavior, Image):
+    pass
+
+class TrafficScreenBtn(ButtonBehavior, Image):
+    pass
+
+class SkimmerScannerBtn(ButtonBehavior, Image):
+    pass
+
+class AllAppsBtn(ButtonBehavior, Image):
+    pass
+
+#####################################################################
+
+# Media Label classes -- These are for the labels in the MobileMedia screen that shows current playing media
+class SongAlbum(Label):
+    def __init__(self, **kwargs):
+        super(SongAlbum, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
+
+    def update(self, *args):
+        try:
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Album | grep variant | cut -b 43-500").read()
+        except:
+            bluetoothdataraw = str('No Data')
         
-# ---------------------------------------------------------------------
+        self.text = str(bluetoothdataraw)
 
-# ---------------------------------------------------------------------
-# Button that tests out shell commands...
-class ActionTestButton(Button):
-    def execute(self):
-        os.system("notify-send 'ayy lmao'")
+class SongName(Label):
+    def __init__(self, **kwargs):
+        super(SongName, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
 
+    def update(self, *args):
+        try:
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Title | grep variant | cut -b 43-500").read()
+        except:
+            bluetoothdataraw = str('No Data')
+        self.text = str(bluetoothdataraw)
 
+class SongArtist(Label):
+    def __init__(self, **kwargs):
+        super(SongArtist, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 1)
 
-# ---------------------------------------------------------------------
+    def update(self, *args):
+        try:
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Artist | grep variant | cut -b 43-500").read()
+        except:
+            bluetoothdataraw = str('No Data')
+        self.text = str(bluetoothdataraw)
 
-# ---------------------------------------------------------------------
-# Class for the main application
+class VolumeLevel(Label):
+    def __init__(self, **kwargs):
+        super(VolumeLevel, self).__init__(**kwargs)
+        Clock.schedule_interval(self.update, 0.5)
+    
+    def update(self, *args):
+        level = os.popen("amixer sget Master | grep 'Front Right' | awk -F '[][]' '{ print $2 }'").read()
+        #level = str('5')
+        self.text = str(level)
+    
+#####################################################################
+
+# Main App Functions
+
 class MainApp(App):
+    trafficRet()
+    dlIMG()
 
+    def cautionPopup(self):
+        caution = Popup(title='CAUTION',
+            content=Label(text=str(os.popen("cat caution").read())),
+            size_hint=(None, None), size=(550, 400))
+        caution.open()
+        time.sleep(10)
+        caution.dismiss()
 
+    # Instruct kivy to create the UI with the elements mentioned in the .kv file
     def build(self):
-        #This was temporarily superceded by a startup script that downloads data once
-        #car is turned on.
-        #TODO: Create a method to manually refresh using a button
-        #self.updateTrafficPic()
         return presentation
 
-    # Replace the following lines to reflect on what you want any buttons to do
-    # in the app, then add them into the KV file in the form of
-    # 'app.name_of_function()' if a system program were to be executed
+    # Test function. This is used to see if any UI elements work
+    def test(self):
+        os.system("notify-send 'SUCCESS'")
+
+    # The function for the "About Popup". This specifies a function, which contains a
+    # popup with the content outlined in the about file in the root directory.
+    
+    def aboutBtn(self):
+        aboutPopup = Popup(title='About this software',
+            content=Label(text=str(os.popen("cat about").read())),
+            size_hint=(None, None), size=(550, 400))
+        aboutPopup.open()
+
+    # This function shows a popup with common power tasks. Can also initiate a restart of the app itself
+    def powerPopup(self):
+        # The next 4 functions are the callbacks that initiate any of the power elements (halt, reboot, disconnect all peripherals, etc.)
+        def cb_reboot(instance):
+                print('REBOOT TEST')
+        def cb_shutdown(instance):
+                print('SHUTDOWN TEST')
+        def cb_restart(instance):
+                print('RESTART APP TEST')
+                os.popen("killall python && python main.py")
+        def cb_disconnect(instance):
+                print('DISCONNECT TEST')
+                pwr.dismiss()
+        
+        # The buttons being defined with the above callbacks...
+        btnReboot = Button(text=('Reboot'), on_press=(cb_reboot))
+        btnHalt = Button(text=('Power Off'), on_press=(cb_shutdown))
+        btnDisconnect = Button(text=('Disconnect'), on_press=(cb_disconnect))
+        btnRestart = Button(text=('Restart App'), on_press=(cb_restart))
+
+        # Adds all of the above buttons into a container
+        btnLayout = BoxLayout()
+        btnLayout.add_widget(btnReboot)
+        btnLayout.add_widget(btnHalt)
+        btnLayout.add_widget(btnDisconnect)
+        btnLayout.add_widget(btnRestart)
+
+        # Defining the pop up menu itself. 
+        pwr = Popup(title='Power options',
+            content = 
+                btnLayout,
+                size_hint=(None, None), 
+                size=(400, 125)
+            )
+        
+        # And finally a way to open the popup menu when called upon
+        pwr.open()
+    def reconnectDev(self):
+        os.popen("bluetoothctl -- connect 58:CB:52:51:0C:FB")
+        os.popen("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB org.bluez.Network1.Connect string:'nap'")
+    
     def play(self):
         os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Play")
     def nextsong(self):
@@ -250,32 +458,15 @@ class MainApp(App):
     def pause(self):
         os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Pause")
 
-    # The following function will be used to update a live traffic image that portrays
-    # data on a commute in pierce county. The updating will be handled by a simple shell
-    # script.
+    def on_start(self, **kwargs):
+        def cautionPopup():
+            caution = Popup(title='CAUTION',
+            content=Label(text=str(os.popen("cat caution").read())),
+            size_hint=(None, None), size=(550, 450))
+            caution.open()
+        cautionPopup()
+presentation = Builder.load_file("main.kv")
 
-    def updateTrafficPic(self):
-        os.system("bash updateTrafficPic.sh")
-    
-    # The following function will allow for the Raspberry Pi's screen to be turned off
-    # at the operator's will.
-
-    def screenOff(self):
-        os.popen("echo 0 > /sys/class/backlight/rpi_backlight/bl_power")
-
-    def testingBtn(self):
-        os.popen("notify-send 'button press success'")
-
-
-
-volLvl = NumericProperty()
-
-presentation = Builder.load_file("pontiacpc.kv")
-
-# ---------------------------------------------------------------------
-
-# ---------------------------------------------------------------------
-# Code to run the program
 MainApp().run()
 
-# ---------------------------------------------------------------------
+#####################################################################
