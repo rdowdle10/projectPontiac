@@ -1,10 +1,10 @@
 Discovery started
 [[0;93mCHG[0m] Controller 5C:F3:70:87:F8:BB Discovering: yes
-[[0;93mCHG[0m] Device 78:77:5F:F3:A2:A5 RSSI: -76
-[[0;93mCHG[0m] Device 78:77:5F:F3:A2:A5 TxPower: 12
-[[0;93mCHG[0m] Device C8:69:CD:CB:C7:E2 RSSI: -94
-[[0;93mCHG[0m] Device D0:03:DF:90:41:2D RSSI: -90
-[[0;93mCHG[0m] Device D0:03:DF:90:41:2D ManufacturerData Key: 0x0075
-[[0;93mCHG[0m] Device D0:03:DF:90:41:2D ManufacturerData Value:
-  42 04 01 20 76 19 0f 00 00 01 32 00 00 00 00 00  B.. v.....2.....
-  00 00 00 00 00 00 00 00                          ........        
+[[0;92mNEW[0m] Device 5A:A3:66:AF:82:ED 5A-A3-66-AF-82-ED
+[[0;92mNEW[0m] Device FC:58:FA:C3:A7:45 FC-58-FA-C3-A7-45
+[[0;92mNEW[0m] Device A4:83:E7:7A:60:CB A4-83-E7-7A-60-CB
+[[0;92mNEW[0m] Device 5D:FF:98:7E:2F:AB 5D-FF-98-7E-2F-AB
+[[0;92mNEW[0m] Device D0:03:DF:90:41:2D D0-03-DF-90-41-2D
+[[0;92mNEW[0m] Device 4B:DA:E6:0F:5C:90 4B-DA-E6-0F-5C-90
+[[0;92mNEW[0m] Device 62:ED:2F:51:88:37 62-ED-2F-51-88-37
+[[0;92mNEW[0m] Device 70:C9:4E:DB:A1:3E DESKTOP-28T99H0

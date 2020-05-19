@@ -21,6 +21,14 @@ ScreenManagement:
     halign: 'right'
     size: self.texture_size
 
+<VolumeLevel>:
+    name: 'volLabel'
+    font_size: 36
+    halign: 'right'
+    id: volLevel
+    size: self.texture_size
+    pos: -560, -200
+    text_size: 500, None
 # Volume buttons
 
 <VolUp>:
@@ -48,10 +56,11 @@ ScreenManagement:
     pos: 12, 86
     
 <Reload>:
+    id: reload
     source: 'elements/reload.png'
     size_hint: 0.0925, 0.15416667
     on_press: app.test()
-    pos: 12, 24
+    pos: 12, 12
 
 <Previous>:
     source: 'elements/prev.png'
@@ -140,7 +149,9 @@ ScreenManagement:
             on_press: root.manager.transition.direction = 'left'
         TrafficScreenBtn:
             on_release: app.root.current = 'trafficTacoma'
+            #on_release: self.update()
             on_press: root.manager.transition.direction = 'left'
+
         SkimmerScannerBtn:
         ActionBar:
             background_color: 0,0,0,0.8
@@ -220,17 +231,14 @@ ScreenManagement:
         text: 'Sorta Long Album Name Blah Blah Blah Blah Blah'
 
     VolumeLevel:
-        font_size: 36
-        halign: 'right'
         id: volumelevel
-        size: self.texture_size
-        pos: -560, -200
-        text_size: 500, None
 
     VolUp:
+        on_release: volumelevel.update()
     VolMute:
     AudioCancel:
     VolDown:
+        on_release: volumelevel.update()
     Previous:
     Play:
     Pause:
@@ -238,6 +246,7 @@ ScreenManagement:
 
 <TrafficScreenTacoma>:
     name: 'trafficTacoma'
+    id: trafficScreenTacoma
     #index: '0'
 
     FloatLayout:
@@ -247,24 +256,27 @@ ScreenManagement:
                 size: self.size
                 source: 'bg_traffic.jpg'
         TrafficImage:
-            id: 'traffic_img'
+            id: traffic_img
             pos: 300, 30
             size: 250, 400
             size_hint: .8, .8
             background_color: 255,0,0
             background_normal: 0,0,0,0
 
-        Label:
-            font_size: 14
-            halign: 'left'
-            pos: 0, -230
+        #Label:
+        #    font_size: 14
+        #    halign: 'left'
+        #    pos: 0, -230
             #text_size: root.width, None
-            text: 'Data is loaded from WSDOT every time car is started up and connected to the internet.'
+        #    text: 'Data is loaded from WSDOT every time car is started up and connected to the internet.'
         ActionBar:
             background_color: 0,0,0,1
             pos_hint: {'top':1}
             ActionView:
                 use_separator: True
+                ActionLabel:
+                    text: 'Tacoma Traffic'
+                    halign: 'center'
                 ActionOverflow:
                     ActionButton:
                         text: 'Seattle Traffic'
@@ -292,18 +304,24 @@ ScreenManagement:
             size_hint_x: 0.5
 
             TrafficTacoma:
+                id: traffictacoma
                 pos: -200, 0
                 size_hint_y: None
                 text_size: 350, None
                 height: self.texture_size[1]
                 padding: 10, 10
+                text: 'Please press reload button to refresh traffic information'
     VolUp:
     VolMute:
     AudioCancel:
     VolDown:
     Reload:
+        on_press: self.update()
+        on_release: traffic_img.update()
+        on_release: traffictacoma.update()
 
 <TrafficScreenAll>:
+    id: alltraffic
     name: 'trafficAll'
     index: '0'
 
@@ -324,11 +342,6 @@ ScreenManagement:
                 on_release: app.root.current = 'trafficTacoma'
                 on_press: root.manager.transition.direction = 'right'
             ActionClock:
-    VolUp:
-    VolMute:
-    AudioCancel:
-    VolDown:
-    Reload:
 
     ScrollView:
         index: '1'
@@ -337,9 +350,17 @@ ScreenManagement:
         size_hint_y: 0.9
 
         TrafficAll:
+            id: trafficall
             size_hint_y: None
             text_size: 600, None
             height: self.texture_size[1]
             padding: 10, 10
 
+    VolUp:
+    VolMute:
+    AudioCancel:
+    VolDown:
+    Reload:
+        #on_press: self.update()
+        on_release: trafficall.update()
 

@@ -65,7 +65,7 @@ def trafficRet():
     except requests.exceptions.RequestException as e:
         export_data = open("data_all", "w+")
         export_data.write("No connection \n")
-        print("No connection for all")
+        print("No connection for data")
         export_data.close()
         export_tacoma_data = open("tacoma_data", "w+")
         export_tacoma_data.write("No connection \n")
@@ -175,7 +175,8 @@ def trafficRet():
 class TrafficImage(Image):
     def __init__(self, **kwargs):
         super(TrafficImage, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 30)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 1800)
         self.source = 'tacoma.png'
     def update(self, *args):
         try:
@@ -194,6 +195,11 @@ class TrafficImage(Image):
 
 # Creating the window, complete with size and page management.
 Window.size = (800, 480)
+
+#####################################################################
+
+# Now specifying which screens are avaiable in the application.
+# MUST BE SPECIFIED IN MAIN.KV FOR THEM TO BE VISIBLE TO THE APPLICATION
 
 class ScreenManagement(ScreenManager):
     pass
@@ -229,11 +235,15 @@ class OffScreen(Screen):
 
 # This class is the basis of the clock that will
 # be displayed on the main screen.
+# NOTE: The rest of the labels and actionlabel will have similar functionality.
 class ClockText(Label):
     def __init__(self, **kwargs):
+        # The following line calls itself...
         super(ClockText, self).__init__(**kwargs)
+        # The Clock function repeats the "update" def.
         Clock.schedule_interval(self.update, 1)
 
+    # Function to update the clock.
     def update(self, *args):
         self.text = time.strftime('%I:%M%p')
 
@@ -250,20 +260,25 @@ class ActionClock(ActionLabel):
 class TrafficAll(Label):
     def __init__(self, **kwargs):
         super(TrafficAll, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 1800)
     
     def update(self, *args):
         spcltrff = os.popen("cat data_all").read()
+        #spcltrff = subprocess.check_output(["cat", "data_all"])
         self.text = str(spcltrff)
 
 class TrafficTacoma(Label):
     def __init__(self, **kwargs):
         super(TrafficTacoma, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 1800)
     
     def update(self, *args):
         spcltrff = os.popen("cat tacoma_data").read()
         self.text = str(spcltrff)
+
+    
 #####################################################################
 
 
@@ -290,11 +305,21 @@ class VolDown(ButtonBehavior, Image):
         level = str('5')
         percent = str('%')
         down = str('-')
-        subprocess.call(["amixer", "set", "Master", level + percent + down])    
+        subprocess.call(["amixer", "set", "Master", level + percent + down])
     #pass
 
 class Reload(ButtonBehavior, Image):
-    pass
+    def update(self, *args):
+        initial = Popup(title='Updating Traffic Information',
+        content=Label(text="Loading, please wait..."),
+        size_hint=(None, None), size=(300, 150))
+        initial.open(animation=False)
+        print("Initializing traffic refresh...")
+        time.sleep(2)
+        initial.dismiss()
+        trafficRet()
+        dlIMG()
+    #pass
 
 class Play(ButtonBehavior, Image):
     pass
@@ -317,7 +342,12 @@ class MediaScreenBtn(ButtonBehavior, Image):
     pass
 
 class TrafficScreenBtn(ButtonBehavior, Image):
-    pass
+    #pass
+    def update(self):
+        print("Traffic screen load success")
+        trafficRet()
+        dlIMG()
+        os.popen("notify-send hi")
 
 class SkimmerScannerBtn(ButtonBehavior, Image):
     pass
@@ -331,11 +361,12 @@ class AllAppsBtn(ButtonBehavior, Image):
 class SongAlbum(Label):
     def __init__(self, **kwargs):
         super(SongAlbum, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 5)
 
     def update(self, *args):
         try:
-            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Album | grep variant | cut -b 43-500").read()
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Album | grep variant | cut -b 43-500").read()
         except:
             bluetoothdataraw = str('No Data')
         
@@ -344,11 +375,12 @@ class SongAlbum(Label):
 class SongName(Label):
     def __init__(self, **kwargs):
         super(SongName, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 5)
 
     def update(self, *args):
         try:
-            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Title | grep variant | cut -b 43-500").read()
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Title | grep variant | cut -b 43-500").read()
         except:
             bluetoothdataraw = str('No Data')
         self.text = str(bluetoothdataraw)
@@ -356,32 +388,34 @@ class SongName(Label):
 class SongArtist(Label):
     def __init__(self, **kwargs):
         super(SongArtist, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 1)
+        Clock.schedule_once(self.update)
+        Clock.schedule_interval(self.update, 5)
 
     def update(self, *args):
         try:
-            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Artist | grep variant | cut -b 43-500").read()
+            bluetoothdataraw = os.popen("dbus-send --system --type=method_call --print-reply --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.freedesktop.DBus.Properties.Get string:org.bluez.MediaPlayer1 string:Track | grep -i -A 2 Artist | grep variant | cut -b 43-500").read()
         except:
             bluetoothdataraw = str('No Data')
         self.text = str(bluetoothdataraw)
 
+
 class VolumeLevel(Label):
     def __init__(self, **kwargs):
         super(VolumeLevel, self).__init__(**kwargs)
-        Clock.schedule_interval(self.update, 0.5)
-    
+        Clock.schedule_once(self.update)
+
     def update(self, *args):
         level = os.popen("amixer sget Master | grep 'Front Right' | awk -F '[][]' '{ print $2 }'").read()
         #level = str('5')
         self.text = str(level)
+    
+    
     
 #####################################################################
 
 # Main App Functions
 
 class MainApp(App):
-    trafficRet()
-    dlIMG()
 
     def cautionPopup(self):
         caution = Popup(title='CAUTION',
@@ -445,18 +479,23 @@ class MainApp(App):
         
         # And finally a way to open the popup menu when called upon
         pwr.open()
+
+#####################################################################
+
+# Functions to call upon when doings things like pausing a song, playing, reconnecting to the phone, etc.
+
     def reconnectDev(self):
-        os.popen("bluetoothctl -- connect 58:CB:52:51:0C:FB")
-        os.popen("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB org.bluez.Network1.Connect string:'nap'")
+        os.popen("bluetoothctl -- connect AA:BB:CC:DD:EE:FF")
+        os.popen("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF org.bluez.Network1.Connect string:'nap'")
     
     def play(self):
-        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Play")
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.bluez.MediaPlayer1.Play")
     def nextsong(self):
-        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Next")
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.bluez.MediaPlayer1.Next")
     def prevsong(self):
-        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Previous")
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.bluez.MediaPlayer1.Previous")
     def pause(self):
-        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_58_CB_52_51_0C_FB/player0 org.bluez.MediaPlayer1.Pause")
+        os.system("dbus-send --system --type=method_call --dest=org.bluez /org/bluez/hci0/dev_AA_BB_CC_DD_EE_FF/player0 org.bluez.MediaPlayer1.Pause")
 
     def on_start(self, **kwargs):
         def cautionPopup():
@@ -465,6 +504,11 @@ class MainApp(App):
             size_hint=(None, None), size=(550, 450))
             caution.open()
         cautionPopup()
+
+#####################################################################
+
+# Finally, running the app with the kvlang file.
+
 presentation = Builder.load_file("main.kv")
 
 MainApp().run()
