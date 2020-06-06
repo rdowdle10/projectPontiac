@@ -12,10 +12,8 @@ if [ -f scanres ] ; then
     rm scanct
 else
 	echo 'Creating results file...'
-
+	touch scanct
 fi
-
-touch scanct
 
 # Ensuring that bluetooth is turned on.
 bluetoothctl -- power on
@@ -26,24 +24,18 @@ timeout 10 bluetoothctl -- scan on >> scanres
 # Display results (CONSOLE USE ONLY)
 cat scanres
 
-# Now display any potential matches in the console
-if cat scanres | grep 58:CB ; then
+# Now display any potential matches using the first filter in the console
+if cat scanres | grep 00:06:66 ; then
 	echo "Skimmer found!"
 	date >> scanlog
 	echo "The following possible skimmer(s) were detected: " >> scanlog
-	cat scanres | grep 58:CB >> scanlog
-	cat scanres | grep 58:CB >> scanct # This is purely for line counting purposes.
+	cat scanres | grep 00:06:66 >> scanlog
+	cat scanres | grep 00:06:66 >> scanct # This is purely for line counting purposes.
 	echo "" >> scanlog
 	echo "Skimmer logged!"
-	exit
 else
 	date >> scanlog
 	echo "No match found..." >> scanlog
 	echo "" >> scanlog
 	echo "No match found..."
-	touch scanct
-	exit
 fi
-
-echo "exiting..."
-exit
